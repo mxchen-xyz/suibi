@@ -1,4 +1,4 @@
-package com.suibi_ry.project.admin.service.impl;
+package com.suibi_ry.project.blog.service.impl;
 
 import org.springframework.stereotype.Service;
 

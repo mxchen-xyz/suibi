@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suibi_ry.project.blog.mapper.SuibiTypeArticleMapper">
+    
+    <resultMap type="SuibiTypeArticle" id="SuibiTypeArticleResult">
+        <result property="typeId"    column="type_id"    />
+        <result property="articleId"    column="article_id"    />
+    </resultMap>
+
+    <sql id="selectSuibiTypeArticleVo">
+        select type_id, article_id from suibi_type_article
+    </sql>
+
+    <select id="selectSuibiTypeArticleList" parameterType="SuibiTypeArticle" resultMap="SuibiTypeArticleResult">
+        <include refid="selectSuibiTypeArticleVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectSuibiTypeArticleById" parameterType="Long" resultMap="SuibiTypeArticleResult">
+        <include refid="selectSuibiTypeArticleVo"/>
+        where type_id = #{typeId}
+    </select>
+        
+    <insert id="insertSuibiTypeArticle" parameterType="SuibiTypeArticle">
+        insert into suibi_type_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="typeId != null">type_id,</if>
+            <if test="articleId != null">article_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="typeId != null">#{typeId},</if>
+            <if test="articleId != null">#{articleId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSuibiTypeArticle" parameterType="SuibiTypeArticle">
+        update suibi_type_article
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="articleId != null">article_id = #{articleId},</if>
+        </trim>
+        where type_id = #{typeId}
+    </update>
+
+    <delete id="deleteSuibiTypeArticleById" parameterType="Long">
+        delete from suibi_type_article where type_id = #{typeId}
+    </delete>
+
+    <delete id="deleteSuibiTypeArticleByIds" parameterType="String">
+        delete from suibi_type_article where type_id in 
+        <foreach item="typeId" collection="array" open="(" separator="," close=")">
+            #{typeId}
+        </foreach>
+    </delete>
+    
+</mapper>

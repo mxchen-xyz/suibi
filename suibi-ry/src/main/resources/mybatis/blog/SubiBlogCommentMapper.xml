@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suibi_ry.project.blog.mapper.SubiBlogCommentMapper">
+    
+    <resultMap type="SubiBlogComment" id="SubiBlogCommentResult">
+        <result property="commentId"    column="comment_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="articleId"    column="article_id"    />
+        <result property="commentContext"    column="comment_context"    />
+        <result property="commentLike"    column="comment_like"    />
+        <result property="parentCommentId"    column="parent_comment_id"    />
+        <result property="commentDate"    column="comment_date"    />
+    </resultMap>
+
+    <sql id="selectSubiBlogCommentVo">
+        select comment_id, user_id, article_id, comment_context, comment_like, parent_comment_id, comment_date from subi_blog_comment
+    </sql>
+
+    <select id="selectSubiBlogCommentList" parameterType="SubiBlogComment" resultMap="SubiBlogCommentResult">
+        <include refid="selectSubiBlogCommentVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="articleId != null "> and article_id = #{articleId}</if>
+            <if test="commentContext != null  and commentContext != ''"> and comment_context = #{commentContext}</if>
+            <if test="commentLike != null "> and comment_like = #{commentLike}</if>
+            <if test="parentCommentId != null "> and parent_comment_id = #{parentCommentId}</if>
+            <if test="commentDate != null "> and comment_date = #{commentDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectSubiBlogCommentById" parameterType="Long" resultMap="SubiBlogCommentResult">
+        <include refid="selectSubiBlogCommentVo"/>
+        where comment_id = #{commentId}
+    </select>
+        
+    <insert id="insertSubiBlogComment" parameterType="SubiBlogComment" useGeneratedKeys="true" keyProperty="commentId">
+        insert into subi_blog_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="articleId != null">article_id,</if>
+            <if test="commentContext != null and commentContext != ''">comment_context,</if>
+            <if test="commentLike != null">comment_like,</if>
+            <if test="parentCommentId != null">parent_comment_id,</if>
+            <if test="commentDate != null">comment_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="articleId != null">#{articleId},</if>
+            <if test="commentContext != null and commentContext != ''">#{commentContext},</if>
+            <if test="commentLike != null">#{commentLike},</if>
+            <if test="parentCommentId != null">#{parentCommentId},</if>
+            <if test="commentDate != null">#{commentDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSubiBlogComment" parameterType="SubiBlogComment">
+        update subi_blog_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="articleId != null">article_id = #{articleId},</if>
+            <if test="commentContext != null and commentContext != ''">comment_context = #{commentContext},</if>
+            <if test="commentLike != null">comment_like = #{commentLike},</if>
+            <if test="parentCommentId != null">parent_comment_id = #{parentCommentId},</if>
+            <if test="commentDate != null">comment_date = #{commentDate},</if>
+        </trim>
+        where comment_id = #{commentId}
+    </update>
+
+    <delete id="deleteSubiBlogCommentById" parameterType="Long">
+        delete from subi_blog_comment where comment_id = #{commentId}
+    </delete>
+
+    <delete id="deleteSubiBlogCommentByIds" parameterType="String">
+        delete from subi_blog_comment where comment_id in 
+        <foreach item="commentId" collection="array" open="(" separator="," close=")">
+            #{commentId}
+        </foreach>
+    </delete>
+    
+</mapper>

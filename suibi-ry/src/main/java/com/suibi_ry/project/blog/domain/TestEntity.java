@@ -1,4 +1,4 @@
-package com.suibi_ry.project.admin.doman;
+package com.suibi_ry.project.blog.domain;
 
 /**
  * TODO

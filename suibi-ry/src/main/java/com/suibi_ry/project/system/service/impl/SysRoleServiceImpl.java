@@ -30,16 +30,16 @@ import com.suibi_ry.project.system.service.ISysRoleService;
 @Service
 public class SysRoleServiceImpl implements ISysRoleService
 {
-    @Autowired
+    @Autowired(required = false)
     private SysRoleMapper roleMapper;
 
-    @Autowired
+    @Autowired(required = false)
     private SysRoleMenuMapper roleMenuMapper;
 
-    @Autowired
+    @Autowired(required = false)
     private SysUserRoleMapper userRoleMapper;
 
-    @Autowired
+    @Autowired(required = false)
     private SysRoleDeptMapper roleDeptMapper;
 
     /**

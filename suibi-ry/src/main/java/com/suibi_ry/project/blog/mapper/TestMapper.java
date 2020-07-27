@@ -1,4 +1,4 @@
-package com.suibi_ry.project.admin.mapper;
+package com.suibi_ry.project.blog.mapper;
 
 /**
  * TODO

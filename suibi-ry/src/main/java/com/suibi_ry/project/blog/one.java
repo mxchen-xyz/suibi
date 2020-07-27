@@ -1,4 +1,4 @@
-package com.suibi_ry.project.admin;
+package com.suibi_ry.project.blog;
 
 /**
  * TODO

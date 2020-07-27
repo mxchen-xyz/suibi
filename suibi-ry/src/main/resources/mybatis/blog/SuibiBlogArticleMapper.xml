@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suibi_ry.project.blog.mapper.SuibiBlogArticleMapper">
+    
+    <resultMap type="SuibiBlogArticle" id="SuibiBlogArticleResult">
+        <result property="articleId"    column="article_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="articleTitle"    column="article_title"    />
+        <result property="articleContent"    column="article_content"    />
+        <result property="articleView"    column="article_view"    />
+        <result property="articleCount"    column="article_count"    />
+        <result property="articleLike"    column="article_like"    />
+        <result property="articleStatus"    column="article_status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectSuibiBlogArticleVo">
+        select article_id, user_id, article_title, article_content, article_view, article_count, article_like, article_status, del_flag, create_time, update_time from suibi_blog_article
+    </sql>
+
+    <select id="selectSuibiBlogArticleList" parameterType="SuibiBlogArticle" resultMap="SuibiBlogArticleResult">
+        <include refid="selectSuibiBlogArticleVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="articleTitle != null  and articleTitle != ''"> and article_title = #{articleTitle}</if>
+            <if test="articleContent != null  and articleContent != ''"> and article_content = #{articleContent}</if>
+            <if test="articleView != null "> and article_view = #{articleView}</if>
+            <if test="articleCount != null "> and article_count = #{articleCount}</if>
+            <if test="articleLike != null "> and article_like = #{articleLike}</if>
+            <if test="articleStatus != null  and articleStatus != ''"> and article_status = #{articleStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectSuibiBlogArticleById" parameterType="Long" resultMap="SuibiBlogArticleResult">
+        <include refid="selectSuibiBlogArticleVo"/>
+        where article_id = #{articleId}
+    </select>
+        
+    <insert id="insertSuibiBlogArticle" parameterType="SuibiBlogArticle" useGeneratedKeys="true" keyProperty="articleId">
+        insert into suibi_blog_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="articleTitle != null and articleTitle != ''">article_title,</if>
+            <if test="articleContent != null and articleContent != ''">article_content,</if>
+            <if test="articleView != null">article_view,</if>
+            <if test="articleCount != null">article_count,</if>
+            <if test="articleLike != null">article_like,</if>
+            <if test="articleStatus != null">article_status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="articleTitle != null and articleTitle != ''">#{articleTitle},</if>
+            <if test="articleContent != null and articleContent != ''">#{articleContent},</if>
+            <if test="articleView != null">#{articleView},</if>
+            <if test="articleCount != null">#{articleCount},</if>
+            <if test="articleLike != null">#{articleLike},</if>
+            <if test="articleStatus != null">#{articleStatus},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSuibiBlogArticle" parameterType="SuibiBlogArticle">
+        update suibi_blog_article
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="articleTitle != null and articleTitle != ''">article_title = #{articleTitle},</if>
+            <if test="articleContent != null and articleContent != ''">article_content = #{articleContent},</if>
+            <if test="articleView != null">article_view = #{articleView},</if>
+            <if test="articleCount != null">article_count = #{articleCount},</if>
+            <if test="articleLike != null">article_like = #{articleLike},</if>
+            <if test="articleStatus != null">article_status = #{articleStatus},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where article_id = #{articleId}
+    </update>
+
+    <delete id="deleteSuibiBlogArticleById" parameterType="Long">
+        delete from suibi_blog_article where article_id = #{articleId}
+    </delete>
+
+    <delete id="deleteSuibiBlogArticleByIds" parameterType="String">
+        delete from suibi_blog_article where article_id in 
+        <foreach item="articleId" collection="array" open="(" separator="," close=")">
+            #{articleId}
+        </foreach>
+    </delete>
+    
+</mapper>
