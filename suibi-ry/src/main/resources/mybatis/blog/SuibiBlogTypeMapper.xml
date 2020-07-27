@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suibi_ry.project.blog.mapper.SuibiBlogTypeMapper">
+    
+    <resultMap type="SuibiBlogType" id="SuibiBlogTypeResult">
+        <result property="typeId"    column="type_id"    />
+        <result property="typeName"    column="type_name"    />
+        <result property="articleNums" column="article_nums"/>
+        <result property="orderNum"    column="order_num"    />
+        <result property="typeStatus"    column="type_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSuibiBlogTypeVo">
+        select * from suibi_blog_type
+    </sql>
+    <!--查询操作-->
+    <select id="selectSuibiBlogTypeList" parameterType="SuibiBlogType" resultMap="SuibiBlogTypeResult">
+        <include refid="selectSuibiBlogTypeVo"/>
+        <where>  
+            <if test="typeName != null  and typeName != ''"> and type_name like concat('%', #{typeName}, '%')</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="typeStatus != null  and typeStatus != ''"> and type_status = #{typeStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectSuibiBlogTypeById" parameterType="Long" resultMap="SuibiBlogTypeResult">
+        <include refid="selectSuibiBlogTypeVo"/>
+        where type_id = #{typeId}
+    </select>
+
+    <!--新增操作-->
+    <insert id="insertSuibiBlogType" parameterType="SuibiBlogType" useGeneratedKeys="true" keyProperty="typeId">
+        insert into suibi_blog_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="typeName != null and typeName != ''">type_name,</if>
+            <if test="articleNums != null and articleNums != ''">article_nums,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="typeStatus != null">type_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="typeName != null and typeName != ''">#{typeName},</if>
+            <if test="articleNums != null and articleNums != ''">#{articleNums},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="typeStatus != null">#{typeStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <!--修改操作-->
+    <update id="updateSuibiBlogType" parameterType="SuibiBlogType">
+        update suibi_blog_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="typeName != null and typeName != ''">type_name = #{typeName},</if>
+            <if test="articleNums != null">article_nums = #{articleNums},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="typeStatus != null">type_status = #{typeStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where type_id = #{typeId}
+    </update>
+
+    <delete id="deleteSuibiBlogTypeById" parameterType="Long">
+        delete from suibi_blog_type where type_id = #{typeId}
+    </delete>
+
+    <delete id="deleteSuibiBlogTypeByIds" parameterType="String">
+        delete from suibi_blog_type where type_id in 
+        <foreach item="typeId" collection="array" open="(" separator="," close=")">
+            #{typeId}
+        </foreach>
+    </delete>
+    
+</mapper>
