@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suibi_ry.project.blog.mapper.SuibiBlogLabelMapper">
+    
+    <resultMap type="SuibiBlogLabel" id="SuibiBlogLabelResult">
+        <result property="labelId"    column="label_id"    />
+        <result property="labelName"    column="label_name"    />
+        <result property="labelColor"    column="label_color"    />
+        <result property="labelStatus"    column="label_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSuibiBlogLabelVo">
+        select label_id, label_name, label_color, label_status, create_time, update_time, remark from suibi_blog_label
+    </sql>
+
+    <select id="selectSuibiBlogLabelList" parameterType="SuibiBlogLabel" resultMap="SuibiBlogLabelResult">
+        <include refid="selectSuibiBlogLabelVo"/>
+        <where>  
+            <if test="labelName != null  and labelName != ''"> and label_name like concat('%', #{labelName}, '%')</if>
+            <if test="labelColor != null  and labelColor != ''"> and label_color = #{labelColor}</if>
+            <if test="labelStatus != null  and labelStatus != ''"> and label_status = #{labelStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectSuibiBlogLabelById" parameterType="Long" resultMap="SuibiBlogLabelResult">
+        <include refid="selectSuibiBlogLabelVo"/>
+        where label_id = #{labelId}
+    </select>
+        
+    <insert id="insertSuibiBlogLabel" parameterType="SuibiBlogLabel" useGeneratedKeys="true" keyProperty="labelId">
+        insert into suibi_blog_label
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="labelName != null and labelName != ''">label_name,</if>
+            <if test="labelColor != null">label_color,</if>
+            <if test="labelStatus != null">label_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="labelName != null and labelName != ''">#{labelName},</if>
+            <if test="labelColor != null">#{labelColor},</if>
+            <if test="labelStatus != null">#{labelStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSuibiBlogLabel" parameterType="SuibiBlogLabel">
+        update suibi_blog_label
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="labelName != null and labelName != ''">label_name = #{labelName},</if>
+            <if test="labelColor != null">label_color = #{labelColor},</if>
+            <if test="labelStatus != null">label_status = #{labelStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where label_id = #{labelId}
+    </update>
+
+    <delete id="deleteSuibiBlogLabelById" parameterType="Long">
+        delete from suibi_blog_label where label_id = #{labelId}
+    </delete>
+
+    <delete id="deleteSuibiBlogLabelByIds" parameterType="String">
+        delete from suibi_blog_label where label_id in 
+        <foreach item="labelId" collection="array" open="(" separator="," close=")">
+            #{labelId}
+        </foreach>
+    </delete>
+    
+</mapper>
